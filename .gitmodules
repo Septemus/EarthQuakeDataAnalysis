@@ -1,0 +1,3 @@
+[submodule "earthquake/vue"]
+	path = earthquake/vue
+	url = https://github.com/Septemus/EarthQuakeDataAnalysisFrontEnd.git
