@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 # Enable Hive support
 from pyspark.sql import SparkSession
+from .utils.sparkHelper import SparkHive
 # Create your views here.
 
 
@@ -13,20 +14,7 @@ def index(req):
 
 
 def api(req):
-    spark = SparkSession.builder \
-        .appName("HiveExample") \
-        .master("spark://earthquake1:7077")\
-        .enableHiveSupport() \
-        .getOrCreate()
-
-    # Fetch data from a Hive table
-    df = spark.sql("SELECT * FROM earthquake_record")
-    # Convert Spark DataFrame to Pandas DataFrame
-    pandas_df = df.toPandas()
-
+    pandas_df = SparkHive.getAllEarthQuakeData()
     # Convert Pandas DataFrame to JSON
     data = pandas_df.to_dict(orient="records")
-
-    # Stop SparkSession
-    spark.stop()
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
