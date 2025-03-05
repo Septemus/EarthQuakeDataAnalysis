@@ -10,7 +10,7 @@ class SparkHive:
             .getOrCreate()
     def __del__(self):    
         print("@@shutting down spark!@@")
-        self.spark.close()
+        self.spark.stop()
     
     def getAllEarthQuakeData(self):
         df = self.spark.sql("SELECT * FROM earthquake_record")
