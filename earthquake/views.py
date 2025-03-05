@@ -15,6 +15,7 @@ def index(req):
 def api(req):
     spark = SparkSession.builder \
         .appName("HiveExample") \
+        .master("spark://earthquake1:7077")\
         .enableHiveSupport() \
         .getOrCreate()
 
