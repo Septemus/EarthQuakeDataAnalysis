@@ -2,20 +2,18 @@ from pyspark.sql import SparkSession
 
 
 class SparkHive:
-    spark = SparkSession.builder \
-        .appName("HiveExample") \
-        .master("spark://earthquake1:7077")\
-        .enableHiveSupport() \
-        .getOrCreate()
-    
-    @staticmethod
-    def close():
+    def __init__(self):
+        self.spark = SparkSession.builder \
+            .appName("HiveExample") \
+            .master("spark://earthquake1:7077")\
+            .enableHiveSupport() \
+            .getOrCreate()
+    def __del__(self):    
         print("@@shutting down spark!@@")
-        SparkHive.close()
+        self.spark.close()
     
-    @staticmethod
-    def getAllEarthQuakeData():
-        df = SparkHive.spark.sql("SELECT * FROM earthquake_record")
+    def getAllEarthQuakeData(self):
+        df = self.spark.sql("SELECT * FROM earthquake_record")
         # Convert Spark DataFrame to Pandas DataFrame
         pandas_df = df.toPandas()
         return pandas_df

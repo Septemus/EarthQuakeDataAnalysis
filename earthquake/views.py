@@ -14,7 +14,9 @@ def index(req):
 
 
 def api(req):
-    pandas_df = SparkHive.getAllEarthQuakeData()
+    sc=SparkHive()
+    pandas_df = sc.getAllEarthQuakeData()
     # Convert Pandas DataFrame to JSON
     data = pandas_df.to_dict(orient="records")
+    del sc
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
