@@ -20,3 +20,13 @@ def api(req):
     data = pandas_df.to_dict(orient="records")
     del sc
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+def totalcount(req):
+    sc=SparkHive()
+    res = sc.getTotalCount()
+    # Convert Pandas DataFrame to JSON
+    del sc
+    data={
+        "data":res
+    }
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})

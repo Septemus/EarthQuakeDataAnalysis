@@ -17,4 +17,8 @@ class SparkHive:
         # Convert Spark DataFrame to Pandas DataFrame
         pandas_df = df.toPandas()
         return pandas_df
+    
+    def getTotalCount(self):
+        res = self.spark.sql("SELECT count(*) FROM earthquake_record")
+        return res.take(1)[0]["count(1)"]
         
