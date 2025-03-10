@@ -2,9 +2,9 @@ from pyspark.sql import SparkSession
 
 
 class SparkHive:
-    def __init__(self):
+    def __init__(self,appName="HiveExample"):
         self.spark = SparkSession.builder \
-            .appName("HiveExample") \
+            .appName(appName) \
             .master("spark://earthquake1:7077")\
             .enableHiveSupport() \
             .getOrCreate()
