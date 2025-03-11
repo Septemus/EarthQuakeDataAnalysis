@@ -14,26 +14,20 @@ def index(req):
 
 
 def api(req):
-    sc=SparkHive("getAllEarthQuakeData")
-    pandas_df = sc.getAllEarthQuakeData()
+    pandas_df = SparkHive.getAllEarthQuakeData()
     # Convert Pandas DataFrame to JSON
     data = pandas_df.to_dict(orient="records")
-    del sc
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 def totalcount(req):
-    sc=SparkHive("getTotalCount")
-    res = sc.getTotalCount()
-    del sc
+    res = SparkHive.getTotalCount()
     data={
         "data":res
     }
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 def average_level(req):
-    sc=SparkHive("getAverageLevel")
-    res=sc.getAverageLevel()
-    del sc
+    res=SparkHive.getAverageLevel()
     data={
         "data":res
     }
