@@ -32,5 +32,5 @@ class SparkHive:
         
     @staticmethod
     def getYearlyCount():
-        res= SparkHive.spark.sql("SELECT date_format(cast(occurTime as date),'yyyy') as year,count(*) as yearly_count FROM earthquake_record group by (cast(occurTime as date),'yyyy') order by year")
+        res= SparkHive.spark.sql("SELECT date_format(cast(occurTime as date),'yyyy') as year,count(*) as yearly_count FROM earthquake_record group by dateformat(cast(occurTime as date),'yyyy') order by year")
         return res.toPandas()
