@@ -8,7 +8,8 @@ urlpatterns = [
         [
             path("",views.api),
             path("total_count/",views.totalcount),
-            path("average_level/",views.average_level)
+            path("average_level/",views.average_level),
+            path("average_depth/",views.average_Depth)
         ]    
     ), name="api"),
 ]

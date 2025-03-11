@@ -32,3 +32,10 @@ def average_level(req):
         "data":res
     }
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+def average_Depth(req):
+    res=SparkHive.getAverageDepth()
+    data={
+        "data":res
+    }
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})

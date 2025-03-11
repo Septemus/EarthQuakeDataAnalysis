@@ -24,5 +24,9 @@ class SparkHive:
     def getAverageLevel():
         res= SparkHive.spark.sql("SELECT AVG(level) FROM earthquake_record")
         return res.take(1)[0]["avg(level)"]
-        
+    
+    @staticmethod
+    def getAverageDepth():
+        res= SparkHive.spark.sql("SELECT AVG(depth) FROM earthquake_record")
+        return res.take(1)[0]["avg(depth)"]
         
