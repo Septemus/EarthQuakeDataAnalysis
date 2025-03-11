@@ -21,4 +21,9 @@ class SparkHive:
     def getTotalCount(self):
         res = self.spark.sql("SELECT count(*) FROM earthquake_record")
         return res.take(1)[0]["count(1)"]
+    
+    def getAverageLevel(self):
+        res=self.spark.sql("SELECT AVG(level) FROM earthquake_record")
+        return res.take(1)[0]["avg(level)"]
+        
         

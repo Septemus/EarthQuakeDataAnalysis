@@ -24,7 +24,15 @@ def api(req):
 def totalcount(req):
     sc=SparkHive("getTotalCount")
     res = sc.getTotalCount()
-    # Convert Pandas DataFrame to JSON
+    del sc
+    data={
+        "data":res
+    }
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+def average_level(req):
+    sc=SparkHive("getAverageLevel")
+    res=sc.getAverageLevel()
     del sc
     data={
         "data":res
