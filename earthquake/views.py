@@ -39,3 +39,8 @@ def average_Depth(req):
         "data":res
     }
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+def yearly_count(req):
+    res=SparkHive.getYearlyCount()
+    data = res.to_dict(orient="records")
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
