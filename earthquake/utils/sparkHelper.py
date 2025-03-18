@@ -1,41 +1,55 @@
 from pyspark.sql import SparkSession
 
+from earthquake.utils.locationHelper import extract_province
+
 
 class SparkHive:
     spark = SparkSession.builder \
-            .appName("earthQuake") \
-            .master("spark://earthquake1:7077")\
-            .enableHiveSupport() \
-            .getOrCreate()
-    
+        .appName("earthQuake") \
+        .master("spark://earthquake1:7077")\
+        .enableHiveSupport() \
+        .getOrCreate()
+
     @staticmethod
     def getAllEarthQuakeData():
         df = SparkHive.spark.sql("SELECT * FROM earthquake_record")
         # Convert Spark DataFrame to Pandas DataFrame
         pandas_df = df.toPandas()
         return pandas_df
-    
+
     @staticmethod
     def getTotalCount():
         res = SparkHive.spark.sql("SELECT count(*) FROM earthquake_record")
         return res.take(1)[0]["count(1)"]
-    
+
     @staticmethod
     def getAverageLevel():
-        res= SparkHive.spark.sql("SELECT AVG(level) FROM earthquake_record")
+        res = SparkHive.spark.sql("SELECT AVG(level) FROM earthquake_record")
         return res.take(1)[0]["avg(level)"]
-    
+
     @staticmethod
     def getAverageDepth():
-        res= SparkHive.spark.sql("SELECT AVG(depth) FROM earthquake_record")
+        res = SparkHive.spark.sql("SELECT AVG(depth) FROM earthquake_record")
         return res.take(1)[0]["avg(depth)"]
-        
+
     @staticmethod
     def getYearlyCount():
-        res= SparkHive.spark.sql("SELECT date_format(cast(occurTime as date),'yyyy') as year,count(*) as yearly_count FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy') order by year")
+        res = SparkHive.spark.sql(
+            "SELECT date_format(cast(occurTime as date),'yyyy') as year,count(*) as yearly_count FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy') order by year")
         return res.toPandas()
-    
+
     @staticmethod
     def getLevelyCount():
-        res= SparkHive.spark.sql("SELECT cast(level as int) as level_int,count(*) as levely_count FROM earthquake_record group by cast(level as int) order by level_int")
+        res = SparkHive.spark.sql(
+            "SELECT cast(level as int) as level_int,count(*) as levely_count FROM earthquake_record group by cast(level as int) order by level_int")
         return res.toPandas()
+
+    @staticmethod
+    def getLocationlyCount():
+        earthquake_rdd = SparkHive.spark.sql(
+            "SELECT * FROM earthquake_record").rdd
+        province_count_rdd = earthquake_rdd\
+            .map(lambda row: extract_province(row.location))\
+            .map(lambda province: (province, 1))\
+            .reduceByKey(lambda a, b: a + b)
+        return province_count_rdd.collect()
