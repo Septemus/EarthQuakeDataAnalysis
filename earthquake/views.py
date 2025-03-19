@@ -54,6 +54,7 @@ def levely_count(req):
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 def locationly_count(req):
-    res=SparkHive.getLocationlyCount()
+    property=req.GET.get("property")
+    res=SparkHive.getLocationlyCount(property)
     data={pair[0]:pair[1] for pair in res}
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})

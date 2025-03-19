@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-from earthquake.utils.locationHelper import extract_province
+from earthquake.utils.locationHelper import extract_pos
 
 
 class SparkHive:
@@ -53,11 +53,11 @@ class SparkHive:
         return res.toPandas()
 
     @staticmethod
-    def getLocationlyCount():
+    def getLocationlyCount(property):
         earthquake_rdd = SparkHive.spark.sql(
             "SELECT * FROM earthquake_record").rdd
-        province_count_rdd = earthquake_rdd\
-            .map(lambda row: extract_province(row.location))\
-            .map(lambda province: (province, 1))\
+        pos_count_rdd = earthquake_rdd\
+            .map(lambda row: extract_pos(row.location,property))\
+            .map(lambda pos: (pos, 1))\
             .reduceByKey(lambda a, b: a + b)
-        return province_count_rdd.collect()
+        return pos_count_rdd.collect()
