@@ -19,7 +19,7 @@ class SparkHive:
                 order=' desc '
             query+=' %s '%order
         if limit:
-            query+=' limit %d '%limit
+            query+=' limit %s '%limit
         df = SparkHive.spark.sql(query)
         # Convert Spark DataFrame to Pandas DataFrame
         pandas_df = df.toPandas()
