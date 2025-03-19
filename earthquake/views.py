@@ -57,9 +57,9 @@ def locationly_count(req):
     property=req.GET.get("property")
     if property is None:
         property="省"
-    elif property is "province":
+    elif property == "province":
         property="省"
-    elif property is "city":
+    elif property == "city":
         property="市"  
     res=SparkHive.getLocationlyCount(property)
     data={pair[0]:pair[1] for pair in res}
