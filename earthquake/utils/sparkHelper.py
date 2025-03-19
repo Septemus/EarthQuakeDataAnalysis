@@ -11,8 +11,13 @@ class SparkHive:
         .getOrCreate()
 
     @staticmethod
-    def getAllEarthQuakeData():
-        df = SparkHive.spark.sql("SELECT * FROM earthquake_record")
+    def getAllEarthQuakeData(orderby,limit):
+        query="SELECT * FROM earthquake_record where 1=1 "
+        if orderby:
+            query+='order by %s'%orderby
+        if limit:
+            query+='limit %d'%limit
+        df = SparkHive.spark.sql(query)
         # Convert Spark DataFrame to Pandas DataFrame
         pandas_df = df.toPandas()
         return pandas_df
