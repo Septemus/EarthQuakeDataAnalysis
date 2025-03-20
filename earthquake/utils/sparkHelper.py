@@ -53,11 +53,12 @@ class SparkHive:
         return res.toPandas()
 
     @staticmethod
-    def getLocationlyCount(property):
+    def getLocationlyCount(property,sort):
         earthquake_rdd = SparkHive.spark.sql(
             "SELECT * FROM earthquake_record").rdd
         pos_count_rdd = earthquake_rdd\
             .map(lambda row: extract_pos(row.location,property))\
             .map(lambda pos: (pos, 1))\
-            .reduceByKey(lambda a, b: a + b)
+            .reduceByKey(lambda a, b: a + b)\
+            .sortBy(lambda x: x[1],True if sort=="asc" else False)
         return pos_count_rdd.collect()
