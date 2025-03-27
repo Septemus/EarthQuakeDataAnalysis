@@ -48,6 +48,11 @@ def yearly_count(req):
     data = res.to_dict(orient="records")
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
+def monthly_count(req):
+    res=SparkHive.getMonthlyCount()
+    data = res.to_dict(orient="records")
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
 def levely_count(req):
     res=SparkHive.getLevelyCount()
     data = res.to_dict(orient="records")
