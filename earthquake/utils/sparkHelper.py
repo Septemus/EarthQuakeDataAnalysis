@@ -68,3 +68,14 @@ class SparkHive:
             .reduceByKey(lambda a, b: a + b)\
             .sortBy(lambda x: x[1],True if sort=="asc" else False)
         return pos_count_rdd.collect()
+    
+    @staticmethod
+    def getLocationlyMonthlyCount(property):
+        earthquake_rdd = SparkHive.spark.sql(
+            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,location FROM earthquake_record").rdd
+        pos_count_rdd = earthquake_rdd\
+            .map(lambda row: row.ym+'/'+extract_pos(row.location,property))\
+            .map(lambda str: (str, 1))\
+            .reduceByKey(lambda a, b: a + b)\
+            .sortBy(lambda x: x[0],True)
+        return pos_count_rdd.collect()

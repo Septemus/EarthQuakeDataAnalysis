@@ -14,6 +14,7 @@ urlpatterns = [
             path("monthly_count/",views.monthly_count),
             path("levely_count/",views.levely_count),
             path("locationly_count/",views.locationly_count),
+            path("locationly_monthly_count/",views.locationly_monthly_count),
         ]    
     ), name="api"),
 ]
