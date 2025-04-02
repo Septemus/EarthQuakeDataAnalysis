@@ -47,6 +47,12 @@ class SparkHive:
         return res.toPandas()
     
     @staticmethod
+    def getYearlyAvg():
+        res = SparkHive.spark.sql(
+            "SELECT date_format(cast(occurTime as date),'yyyy') as year,avg(level) as yearly_avg FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy') order by year")
+        return res.toPandas()
+    
+    @staticmethod
     def getMonthlyCount():
         res = SparkHive.spark.sql(
             "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,count(*) as ymly_count FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy-MM') order by ym")

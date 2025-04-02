@@ -11,6 +11,7 @@ urlpatterns = [
             path("average_level/",views.average_level),
             path("average_depth/",views.average_Depth),
             path("yearly_count/",views.yearly_count),
+            path("yearly_avg/",views.yearly_avg),
             path("monthly_count/",views.monthly_count),
             path("levely_count/",views.levely_count),
             path("locationly_count/",views.locationly_count),
