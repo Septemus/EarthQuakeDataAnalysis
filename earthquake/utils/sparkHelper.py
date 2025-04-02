@@ -94,7 +94,7 @@ class SparkHive:
             .reduceByKey(lambda a, b: 
                 {"sum":a["sum"]+b["sum"],"count":a["count"]+b["count"]}
             )\
-            .map(lambda tp:(tp[0],tp[1]["sum"]/tp[0]["count"]))\
+            .map(lambda tp:(tp[0],tp[1]["sum"]/tp[1]["count"]))\
             .sortBy(lambda x: x[1],True if sort=="asc" else False)
         return pos_count_rdd.collect()
     
