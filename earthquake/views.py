@@ -22,6 +22,12 @@ def api(req):
     data = pandas_df.to_dict(orient="records")
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
+def depth(req):
+    pandas_df = SparkHive.getDepth()
+    # Convert Pandas DataFrame to JSON
+    data = pandas_df.to_dict(orient="records")
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
 def depth_level(req):
     pandas_df = SparkHive.getDepthLevel()
     # Convert Pandas DataFrame to JSON

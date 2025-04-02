@@ -26,6 +26,14 @@ class SparkHive:
         return pandas_df
     
     @staticmethod
+    def getDepth():
+        query="SELECT depth FROM earthquake_record where 1=1 "
+        df = SparkHive.spark.sql(query)
+        # Convert Spark DataFrame to Pandas DataFrame
+        pandas_df = df.toPandas()
+        return pandas_df
+    
+    @staticmethod
     def getDepthLevel():
         query="SELECT depth,level FROM earthquake_record where 1=1 "
         df = SparkHive.spark.sql(query)

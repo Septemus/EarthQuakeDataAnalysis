@@ -18,6 +18,7 @@ urlpatterns = [
             path("locationly_count/",views.locationly_count),
             path("locationly_level_avg/",views.locationly_level_avg),
             path("depth_level/",views.depth_level),
+            path("depth/",views.depth),
             path("locationly_monthly_count/",views.locationly_monthly_count),
         ]    
     ), name="api"),
