@@ -13,6 +13,7 @@ urlpatterns = [
             path("yearly_count/",views.yearly_count),
             path("yearly_avg/",views.yearly_avg),
             path("monthly_count/",views.monthly_count),
+            path("monthly_avg/",views.monthly_avg),
             path("levely_count/",views.levely_count),
             path("locationly_count/",views.locationly_count),
             path("locationly_monthly_count/",views.locationly_monthly_count),
