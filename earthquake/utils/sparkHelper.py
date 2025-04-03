@@ -115,6 +115,23 @@ class SparkHive:
         return pos_count_rdd.collect()
     
     @staticmethod
+    def getLocationlyDepthAvg(property,sort):
+        earthquake_rdd = SparkHive.spark.sql(
+            "SELECT * FROM earthquake_record").rdd
+        pos_count_rdd = earthquake_rdd\
+            .map(lambda row: (
+                    extract_pos(row.location,property),
+                    {"sum":row.depth,"count":1}
+                )
+            )\
+            .reduceByKey(lambda a, b: 
+                {"sum":a["sum"]+b["sum"],"count":a["count"]+b["count"]}
+            )\
+            .map(lambda tp:(tp[0],tp[1]["sum"]/tp[1]["count"]))\
+            .sortBy(lambda x: x[1],True if sort=="asc" else False)
+        return pos_count_rdd.collect()
+    
+    @staticmethod
     def getLocationlyMonthlyCount(property):
         earthquake_rdd = SparkHive.spark.sql(
             "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,location FROM earthquake_record").rdd
