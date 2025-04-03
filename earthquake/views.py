@@ -80,6 +80,12 @@ def monthly_avg(req):
     data = res.to_dict(orient="records")
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
+def monthly_depth_avg(req):
+    res=SparkHive.getMonthlyDepthAvg()
+    data = res.to_dict(orient="records")
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
 def levely_count(req):
     res=SparkHive.getLevelyCount()
     data = res.to_dict(orient="records")
