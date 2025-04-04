@@ -7,12 +7,12 @@ class SparkHive:
     spark = SparkSession.builder \
         .appName("earthQuake") \
         .master("spark://earthquake1:7077")\
+        .config("spark.sql.hive.convertMetastoreOrc","false")\
         .enableHiveSupport() \
         .getOrCreate()
 
     @staticmethod
     def getAllEarthQuakeData(orderby,limit,order):
-        SparkHive.spark.sql("refresh TABLE earthquake_record_acid")
         query="SELECT * FROM earthquake_record_acid where 1=1 "
         if orderby:
             query+=' order by %s '%orderby
