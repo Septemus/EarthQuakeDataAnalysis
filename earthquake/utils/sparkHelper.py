@@ -10,7 +10,7 @@ class SparkHive:
         .getOrCreate()
         
     spark.read.format("jdbc")\
-        .option("url", "jdbc:hive2://localhost:10000")\
+        .option("url", "jdbc:hive2://earthquake1:10000")\
         .option("dbtable", "earthquake_record_acid")\
         .option("driver","org.apache.hive.jdbc.HiveDriver")\
         .load()\
