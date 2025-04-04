@@ -12,6 +12,7 @@ class SparkHive:
     spark.read.format("jdbc")\
         .option("url", "jdbc:hiveserver2://localhost:10000")\
         .option("dbtable", "earthquake_record_acid")\
+        .option("driver","org.apache.hive.jdbc.HiveDriver")\
         .load()\
         .createOrReplaceTempView("earthquake_record_acid")
 
