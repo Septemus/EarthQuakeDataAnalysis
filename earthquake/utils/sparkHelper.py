@@ -12,7 +12,7 @@ class SparkHive:
     spark.read \
         .format("jdbc") \
         .option("url", "jdbc:postgresql://earthquake1:5432/furong") \
-        .option("dbtable", "earthquake_record") \
+        .option("dbtable", "earthquake_django_record") \
         .option("user", "furong") \
         .option("password", "271828") \
         .option("driver", "org.postgresql.Driver") \
