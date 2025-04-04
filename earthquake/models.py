@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Django_record(models.Model):
-    occurTime = models.DateTimeField()
+    occurtime = models.DateTimeField()
     logitude = models.FloatField()
     latitude=models.FloatField()
     depth=models.IntegerField()
