@@ -9,7 +9,11 @@ class SparkHive:
         .master("spark://earthquake1:7077")\
         .getOrCreate()
         
-    spark.read.format("jdbc").option("url", "jdbc:hiveserver2://localhost:10000").load().createOrReplaceTempView("earthquake_record_acid")
+    spark.read.format("jdbc")\
+        .option("url", "jdbc:hiveserver2://localhost:10000")\
+        .option("dbtable", "earthquake_record_acid")\
+        .load()\
+        .createOrReplaceTempView("earthquake_record_acid")
 
     @staticmethod
     def getAllEarthQuakeData(orderby,limit,order):
