@@ -12,7 +12,7 @@ class SparkHive:
 
     @staticmethod
     def getAllEarthQuakeData(orderby,limit,order):
-        query="SELECT * FROM earthquake_record where 1=1 "
+        query="SELECT * FROM earthquake_record_acid where 1=1 "
         if orderby:
             query+=' order by %s '%orderby
             if order is None:
@@ -27,7 +27,7 @@ class SparkHive:
     
     @staticmethod
     def getDepth():
-        query="SELECT depth FROM earthquake_record where 1=1 "
+        query="SELECT depth FROM earthquake_record_acid where 1=1 "
         df = SparkHive.spark.sql(query)
         # Convert Spark DataFrame to Pandas DataFrame
         pandas_df = df.toPandas()
@@ -35,7 +35,7 @@ class SparkHive:
     
     @staticmethod
     def getDepthLevel():
-        query="SELECT depth,level FROM earthquake_record where 1=1 "
+        query="SELECT depth,level FROM earthquake_record_acid where 1=1 "
         df = SparkHive.spark.sql(query)
         # Convert Spark DataFrame to Pandas DataFrame
         pandas_df = df.toPandas()
@@ -43,65 +43,65 @@ class SparkHive:
 
     @staticmethod
     def getTotalCount():
-        res = SparkHive.spark.sql("SELECT count(*) FROM earthquake_record")
+        res = SparkHive.spark.sql("SELECT count(*) FROM earthquake_record_acid")
         return res.take(1)[0]["count(1)"]
 
     @staticmethod
     def getAverageLevel():
-        res = SparkHive.spark.sql("SELECT AVG(level) FROM earthquake_record")
+        res = SparkHive.spark.sql("SELECT AVG(level) FROM earthquake_record_acid")
         return res.take(1)[0]["avg(level)"]
 
     @staticmethod
     def getAverageDepth():
-        res = SparkHive.spark.sql("SELECT AVG(depth) FROM earthquake_record")
+        res = SparkHive.spark.sql("SELECT AVG(depth) FROM earthquake_record_acid")
         return res.take(1)[0]["avg(depth)"]
 
     @staticmethod
     def getYearlyCount():
         res = SparkHive.spark.sql(
-            "SELECT date_format(cast(occurTime as date),'yyyy') as year,count(*) as yearly_count FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy') order by year")
+            "SELECT date_format(cast(occurTime as date),'yyyy') as year,count(*) as yearly_count FROM earthquake_record_acid group by date_format(cast(occurTime as date),'yyyy') order by year")
         return res.toPandas()
     
     @staticmethod
     def getYearlyAvg():
         res = SparkHive.spark.sql(
-            "SELECT date_format(cast(occurTime as date),'yyyy') as year,avg(level) as yearly_avg FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy') order by year")
+            "SELECT date_format(cast(occurTime as date),'yyyy') as year,avg(level) as yearly_avg FROM earthquake_record_acid group by date_format(cast(occurTime as date),'yyyy') order by year")
         return res.toPandas()
     
     @staticmethod
     def getYearlyDepthAvg():
         res = SparkHive.spark.sql(
-            "SELECT date_format(cast(occurTime as date),'yyyy') as year,avg(depth) as yearly_avg FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy') order by year")
+            "SELECT date_format(cast(occurTime as date),'yyyy') as year,avg(depth) as yearly_avg FROM earthquake_record_acid group by date_format(cast(occurTime as date),'yyyy') order by year")
         return res.toPandas()
     
     @staticmethod
     def getMonthlyCount():
         res = SparkHive.spark.sql(
-            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,count(*) as ymly_count FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy-MM') order by ym")
+            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,count(*) as ymly_count FROM earthquake_record_acid group by date_format(cast(occurTime as date),'yyyy-MM') order by ym")
         return res.toPandas()
     
     @staticmethod
     def getMonthlyAvg():
         res = SparkHive.spark.sql(
-            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,avg(level) as ymly_avg FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy-MM') order by ym")
+            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,avg(level) as ymly_avg FROM earthquake_record_acid group by date_format(cast(occurTime as date),'yyyy-MM') order by ym")
         return res.toPandas()
     
     @staticmethod
     def getMonthlyDepthAvg():
         res = SparkHive.spark.sql(
-            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,avg(depth) as ymly_avg FROM earthquake_record group by date_format(cast(occurTime as date),'yyyy-MM') order by ym")
+            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,avg(depth) as ymly_avg FROM earthquake_record_acid group by date_format(cast(occurTime as date),'yyyy-MM') order by ym")
         return res.toPandas()
 
     @staticmethod
     def getLevelyCount():
         res = SparkHive.spark.sql(
-            "SELECT cast(level as int) as level_int,count(*) as levely_count FROM earthquake_record group by cast(level as int) order by level_int")
+            "SELECT cast(level as int) as level_int,count(*) as levely_count FROM earthquake_record_acid group by cast(level as int) order by level_int")
         return res.toPandas()
 
     @staticmethod
     def getLocationlyCount(property,sort):
         earthquake_rdd = SparkHive.spark.sql(
-            "SELECT * FROM earthquake_record").rdd
+            "SELECT * FROM earthquake_record_acid").rdd
         pos_count_rdd = earthquake_rdd\
             .map(lambda row: extract_pos(row.location,property))\
             .map(lambda pos: (pos, 1))\
@@ -112,7 +112,7 @@ class SparkHive:
     @staticmethod
     def getLocationlyLevelAvg(property,sort):
         earthquake_rdd = SparkHive.spark.sql(
-            "SELECT * FROM earthquake_record").rdd
+            "SELECT * FROM earthquake_record_acid").rdd
         pos_count_rdd = earthquake_rdd\
             .map(lambda row: (
                     extract_pos(row.location,property),
@@ -129,7 +129,7 @@ class SparkHive:
     @staticmethod
     def getLocationlyDepthAvg(property,sort):
         earthquake_rdd = SparkHive.spark.sql(
-            "SELECT * FROM earthquake_record").rdd
+            "SELECT * FROM earthquake_record_acid").rdd
         pos_count_rdd = earthquake_rdd\
             .map(lambda row: (
                     extract_pos(row.location,property),
@@ -146,7 +146,7 @@ class SparkHive:
     @staticmethod
     def getLocationlyMonthlyCount(property):
         earthquake_rdd = SparkHive.spark.sql(
-            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,location FROM earthquake_record").rdd
+            "SELECT date_format(cast(occurTime as date),'yyyy-MM') as ym,location FROM earthquake_record_acid").rdd
         pos_count_rdd = earthquake_rdd\
             .map(lambda row: row.ym+'/'+extract_pos(row.location,property))\
             .map(lambda str: (str, 1))\
