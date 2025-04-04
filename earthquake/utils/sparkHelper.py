@@ -7,8 +7,17 @@ class SparkHive:
     spark = SparkSession.builder \
         .appName("earthQuake") \
         .master("spark://earthquake1:7077")\
-        .enableHiveSupport() \
         .getOrCreate()
+        
+    spark.read \
+        .format("jdbc") \
+        .option("url", "jdbc:postgresql://earthquake1:5432/furong") \
+        .option("dbtable", "earthquake_record") \
+        .option("user", "furong") \
+        .option("password", "271828") \
+        .option("driver", "org.postgresql.Driver") \
+        .load()\
+        .createOrReplaceTempView("earthquake_record")
 
     @staticmethod
     def getAllEarthQuakeData(orderby,limit,order):
