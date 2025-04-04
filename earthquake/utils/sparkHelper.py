@@ -12,6 +12,7 @@ class SparkHive:
 
     @staticmethod
     def getAllEarthQuakeData(orderby,limit,order):
+        SparkHive.spark.refreshTable("earthquake_record_acid")
         query="SELECT * FROM earthquake_record_acid where 1=1 "
         if orderby:
             query+=' order by %s '%orderby
