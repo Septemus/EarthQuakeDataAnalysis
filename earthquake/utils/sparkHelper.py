@@ -7,9 +7,9 @@ class SparkHive:
     spark = SparkSession.builder \
         .appName("earthQuake") \
         .master("spark://earthquake1:7077")\
-        .config("spark.sql.hive.convertMetastoreOrc","false")\
-        .enableHiveSupport() \
         .getOrCreate()
+        
+    spark.read.format("jdbc").option("url", "jdbc:hiveserver2://localhost:10000").load().createOrReplaceTempView("earthquake_record_acid")
 
     @staticmethod
     def getAllEarthQuakeData(orderby,limit,order):
