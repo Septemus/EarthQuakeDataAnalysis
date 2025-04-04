@@ -7,7 +7,8 @@ class SparkHive:
     spark = SparkSession.builder \
         .appName("earthQuake") \
         .master("spark://earthquake1:7077")\
-        .config("spark.sql.hive.convertMetastoreOrc","false")\
+        .config("spark.sql.hive.convertMetastoreOrc","true")\
+        .config("spark.sql.orc.impl","native")\
         .enableHiveSupport() \
         .getOrCreate()
 
