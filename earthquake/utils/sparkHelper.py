@@ -20,8 +20,10 @@ class SparkHive:
         .createOrReplaceTempView("earthquake_record")
 
     @staticmethod
-    def getAllEarthQuakeData(orderby,limit,order):
+    def getAllEarthQuakeData(orderby,limit,order,year):
         query="SELECT * FROM earthquake_record where 1=1 "
+        if year:
+            query+=f'and year = {year} '
         if orderby:
             query+=' order by %s '%orderby
             if order is None:

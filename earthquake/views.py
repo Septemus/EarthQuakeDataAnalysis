@@ -17,7 +17,8 @@ def api(req):
     orderby=req.GET.get("orderby")
     order=req.GET.get("order")
     limit=req.GET.get("limit")
-    pandas_df = SparkHive.getAllEarthQuakeData(orderby,limit,order)
+    year=req.GET.get("year")
+    pandas_df = SparkHive.getAllEarthQuakeData(orderby,limit,order,year)
     # Convert Pandas DataFrame to JSON
     data = pandas_df.to_dict(orient="records")
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
