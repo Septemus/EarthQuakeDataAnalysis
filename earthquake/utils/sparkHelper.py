@@ -108,9 +108,11 @@ class SparkHive:
         return res.toPandas()
 
     @staticmethod
-    def getLocationlyCount(property,sort):
-        earthquake_rdd = SparkHive.spark.sql(
-            "SELECT * FROM earthquake_record").rdd
+    def getLocationlyCount(property,sort,year):
+        sql="SELECT * FROM earthquake_record where 1=1 "
+        if(year):
+            sql+=f"and date_format(cast(occurTime as date),'yyyy')={year}"
+        earthquake_rdd = SparkHive.spark.sql(sql).rdd
         pos_count_rdd = earthquake_rdd\
             .map(lambda row: extract_pos(row.location,property))\
             .map(lambda pos: (pos, 1))\

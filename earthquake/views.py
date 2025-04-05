@@ -102,7 +102,8 @@ def locationly_count(req):
     sort=req.GET.get("sort")
     if sort is None:
         sort="asc"
-    res=SparkHive.getLocationlyCount(property,sort)
+    year=req.GET.get("year")
+    res=SparkHive.getLocationlyCount(property,sort,year)
     data={pair[0]:pair[1] for pair in res}
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
