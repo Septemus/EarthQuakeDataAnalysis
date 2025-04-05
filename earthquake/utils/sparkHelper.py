@@ -23,7 +23,7 @@ class SparkHive:
     def getAllEarthQuakeData(orderby,limit,order,year):
         query="SELECT * FROM earthquake_record where 1=1 "
         if year:
-            query+=f'and year = {year} '
+            query+=f"and date_format(cast(occurTime as date),'yyyy')={year} "
         if orderby:
             query+=' order by %s '%orderby
             if order is None:
