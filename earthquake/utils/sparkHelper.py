@@ -121,6 +121,18 @@ class SparkHive:
         return pos_count_rdd.collect()
     
     @staticmethod
+    def getLocationlyMax(property,sort,year):
+        sql="SELECT * FROM earthquake_record where 1=1 "
+        if(year):
+            sql+=f"and date_format(cast(occurTime as date),'yyyy')={year}"
+        earthquake_rdd = SparkHive.spark.sql(sql).rdd
+        pos_count_rdd = earthquake_rdd\
+            .map(lambda row: (extract_pos(row.location,property),row.level))\
+            .reduceByKey(lambda a, b: max(a,b))\
+            .sortBy(lambda x: x[1],True if sort=="asc" else False)
+        return pos_count_rdd.collect()
+    
+    @staticmethod
     def getLocationlyLevelAvg(property,sort):
         earthquake_rdd = SparkHive.spark.sql(
             "SELECT * FROM earthquake_record").rdd

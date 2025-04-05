@@ -107,6 +107,24 @@ def locationly_count(req):
     data={pair[0]:pair[1] for pair in res}
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
+def locationly_max(req):
+    property=req.GET.get("property")
+    if property is None:
+        property="省"
+    elif property == "province":
+        property="省"
+    elif property == "city":
+        property="市"  
+    sort=req.GET.get("sort")
+    if sort is None:
+        sort="asc"
+    year=req.GET.get("year")
+    res=SparkHive.getLocationlyMax(property,sort,year)
+    data={pair[0]:pair[1] for pair in res}
+    return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+
 def locationly_level_avg(req):
     property=req.GET.get("property")
     if property is None:
